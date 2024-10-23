@@ -12,6 +12,8 @@
         }
         main {
             padding: 20px;
+              display: flex;
+              justify-content: space-between;
         }
         h1, h2 {
             color: #333;
