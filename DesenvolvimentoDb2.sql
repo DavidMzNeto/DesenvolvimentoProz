@@ -45,3 +45,19 @@ SELECT Cursos.nome_curso AS Curso
 FROM Cursos
 LEFT JOIN Matriculas ON Cursos.curso_id = Matriculas.curso_id
 WHERE Matriculas.curso_id IS NULL;
+
+CREATE TRIGGER validar_matricula_duplicada
+BEFORE INSERT ON Matriculas
+FOR EACH ROW
+BEGIN
+    DECLARE total INT;
+
+    SELECT COUNT(*) INTO total
+    FROM Matriculas
+    WHERE aluno_id = NEW.aluno_id AND curso_id = NEW.curso_id;
+
+    IF total > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Este aluno já está matriculado neste curso.';
+    END IF;
+END //
