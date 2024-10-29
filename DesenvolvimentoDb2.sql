@@ -60,4 +60,27 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Este aluno já está matriculado neste curso.';
     END IF;
+END 
+
+CREATE TABLE Vendas (
+    venda_id INT PRIMARY KEY,
+    produto_id INT,
+    data_venda DATE,
+    quantidade INT,
+    FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id)
+);
+
+CREATE PROCEDURE relatorio_diario_vendas (IN data_consulta DATE)
+BEGIN
+    SELECT 
+        produto_id,
+        SUM(quantidade) AS total_vendido
+    FROM 
+        Vendas
+    WHERE 
+        data_venda = data_consulta
+    GROUP BY 
+        produto_id;
 END //
+
+CALL relatorio_diario_vendas('2024-10-01');
