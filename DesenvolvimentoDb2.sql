@@ -84,3 +84,29 @@ BEGIN
 END //
 
 CALL relatorio_diario_vendas('2024-10-01');
+
+CREATE TABLE Clientes (
+    cliente_id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    data_cadastro DATE
+);
+CREATE FUNCTION total_clientes_cadastrados_dia (data_consulta DATE)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+    
+    -- Conta o número de clientes cadastrados na data informada
+    SELECT COUNT(*) INTO total
+    FROM Clientes
+    WHERE data_cadastro = data_consulta;
+
+    RETURN total;
+END 
+
+
+SELECT total_clientes_cadastrados_dia('2024-10-15') AS total_clientes;
+
+
+
